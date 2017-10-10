@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHBGame.WebApi", "src\RHBGame.WebApi\RHBGame.WebApi.csproj", "{D5408913-831E-45A7-A31F-51BB0A152373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHBGame.Data", "src\RHBGame.Data\RHBGame.Data.csproj", "{80947E66-F713-4D96-8AAC-8C3F8C86B882}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5408913-831E-45A7-A31F-51BB0A152373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5408913-831E-45A7-A31F-51BB0A152373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5408913-831E-45A7-A31F-51BB0A152373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5408913-831E-45A7-A31F-51BB0A152373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80947E66-F713-4D96-8AAC-8C3F8C86B882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80947E66-F713-4D96-8AAC-8C3F8C86B882}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80947E66-F713-4D96-8AAC-8C3F8C86B882}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80947E66-F713-4D96-8AAC-8C3F8C86B882}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD6961C6-3BD9-424B-B45C-25587C3A7651}
+	EndGlobalSection
+EndGlobal
