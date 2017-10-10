@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace RHBGame.Data.Models
 {
@@ -10,20 +7,11 @@ namespace RHBGame.Data.Models
     {
         [Column("question_id")]
         public int QuestionId { get; set; }
+
         [Column("question")]
         public string QuestionText { get; set; }
 
-
-        public Question()
-        {
-
-        }
-
-
-        public Question(int questionId, string questionText)
-        {
-            QuestionId = questionId;
-            QuestionText = questionText;
-        }
+        [Required]
+        public Topic Topic { get; set; }
     }
 }

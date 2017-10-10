@@ -8,7 +8,7 @@ using RHBGame.Data.Models;
 
 namespace RHBGame.WebApi.Controllers
 {
-    public class PlayerController : ApiController
+    public sealed class PlayerController : ApiController
     {
         private readonly RHBGameRepository _repository;
 

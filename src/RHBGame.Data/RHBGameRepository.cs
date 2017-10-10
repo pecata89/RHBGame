@@ -5,7 +5,7 @@ namespace RHBGame.Data
 {
     public class RHBGameRepository : DbContext
     {
-        public RHBGameRepository() : base("RHBGameContext")
+        public RHBGameRepository() : base("name=Database")
         {
 
         }
@@ -16,9 +16,10 @@ namespace RHBGame.Data
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-        //}
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

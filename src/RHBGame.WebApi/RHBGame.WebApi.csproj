@@ -54,10 +54,6 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\RHBGameDatabase.mdf" />
-    <Content Include="App_Data\RHBGameDatabase_log.ldf">
-      <DependentUpon>RHBGameDatabase.mdf</DependentUpon>
-    </Content>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -77,12 +73,18 @@
     <PackageReference Include="Microsoft.AspNet.WebApi">
       <Version>5.2.3</Version>
     </PackageReference>
+    <PackageReference Include="Unity">
+      <Version>4.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RHBGame.Data\RHBGame.Data.csproj">
       <Project>{80947e66-f713-4d96-8aac-8c3f8c86b882}</Project>
       <Name>RHBGame.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
