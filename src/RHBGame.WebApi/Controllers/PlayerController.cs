@@ -22,7 +22,7 @@ namespace RHBGame.WebApi.Controllers
         public Task<List<Player>> GetAllPlayersAsync() => _repository.Players.ToListAsync();
 
 
-        public Task<Player> GetPlayerByIDAsync(Int32 id) => _repository.Players.FirstAsync( x => x.PlayerId == id );
+        public Task<Player> GetPlayerByIDAsync(Int32 id) => _repository.Players.FindAsync( id );
 
 
         public async Task InsertPlayerAsync(Player player)

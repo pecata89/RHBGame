@@ -13,6 +13,12 @@ namespace RHBGame.WebApi
     {
         void Application_Start(Object sender, EventArgs e)
         {
+            // Force the creation of the databae (or update) at startup
+            using (var db = new RHBGameRepository())
+            {
+                db.Topics.FirstOrDefault();
+            }
+
             GlobalConfiguration.Configure(config =>
             {
                 config.MapHttpAttributeRoutes();

@@ -1,17 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RHBGame.Data.Models
 {
     public class Question
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         [Column("question_id")]
-        public int QuestionId { get; set; }
-
-        [Column("question")]
-        public string QuestionText { get; set; }
+        public Int32 Id { get; set; }
 
         [Required]
-        public Topic Topic { get; set; }
+        [MaxLength(200)]
+        [Column("question")]
+        public String Text { get; set; }
+
+        public virtual ICollection<Topic> Topics { get; set; }
     }
 }

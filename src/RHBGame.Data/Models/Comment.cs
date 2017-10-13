@@ -1,24 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RHBGame.Data.Models
 {
     public class Comment
     {
-        public int CommentId { get; set; }
-        public string CommentText { get; set; }
-        public int AnswerId { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
+        [Column("comment_id")]
+        public Int32 Id { get; set; }
+
+        [Required]
+        [MaxLength(500)]
+        [Column("comment")]
+        public String Text { get; set; }
+
+
+        [Required]
+        [Column("answer_id")]
+        public Int32 AnswerId { get; set; }
+
+        [ForeignKey(nameof(AnswerId))]
+        public Answer Answer { get; set; }
+
+
+        [Required]
+        [Column("player_id")]
+        public Int32 PlayerId { get; set; }
+
+        [ForeignKey(nameof(PlayerId))]
+        public Player Player { get; set; }
+
+  
+        [Column("created")]
         public DateTime Created { get; set; }
-
-
-        public Comment(int commentId, string commentText, int answerId, DateTime created)
-        {
-            CommentId = commentId;
-            CommentText = commentText;
-            AnswerId = answerId;
-            Created = created;
-        }
     }
 }
