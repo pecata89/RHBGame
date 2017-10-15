@@ -23,6 +23,7 @@ namespace RHBGame.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Session> Sessions { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

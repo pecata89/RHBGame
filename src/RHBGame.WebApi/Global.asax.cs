@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dependencies;
@@ -22,15 +23,11 @@ namespace RHBGame.WebApi
             GlobalConfiguration.Configure(config =>
             {
                 config.MapHttpAttributeRoutes();
-                config.Routes.MapHttpRoute(
-                    name: "DefaultApi",
-                    routeTemplate: "api/{controller}/{id}",
-                    defaults: new { id = RouteParameter.Optional }
-                );
-
+                
                 // Dependency injection
                 var container = new UnityContainer();
                 container.RegisterType<RHBGameRepository>();
+                container.RegisterType<AuthenticationHelper>();
 
                 config.DependencyResolver = new DependencyResolver(container);
             });

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RHBGame.Data.Models
 {
+    [Table("Questions")]
     public class Question
     {
         [Key]
