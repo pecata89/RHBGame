@@ -59,8 +59,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\PlayerCreateInfo.cs" />
+    <Compile Include="Contracts\PlayerUpdateInfo.cs" />
+    <Compile Include="Contracts\PlayerLoginInfo.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\AnswerController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

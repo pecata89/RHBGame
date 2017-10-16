@@ -13,11 +13,11 @@ namespace RHBGame.WebApi.Contracts
 
 
         [Required]
-        public String Password { get; set; }
+        public String Username { get; set; }
 
 
         [Required]
-        public String Username { get; set; }
+        public String Password { get; set; }
 
 
         [Required]
@@ -29,6 +29,6 @@ namespace RHBGame.WebApi.Contracts
 
 
         [Required]
-        public DateTime BirthDate { get; set; }
+        public DateTime Birthdate { get; set; }
     }
 }

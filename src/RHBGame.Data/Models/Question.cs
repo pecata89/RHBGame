@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace RHBGame.Data.Models
 {
@@ -19,6 +20,7 @@ namespace RHBGame.Data.Models
         [Column("question")]
         public String Text { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Topic> Topics { get; set; }
     }
 }

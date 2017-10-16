@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHBGame.WebApi", "src\RHBGame.WebApi\RHBGame.WebApi.csproj", "{D5408913-831E-45A7-A31F-51BB0A152373}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHBGame.Data", "src\RHBGame.Data\RHBGame.Data.csproj", "{80947E66-F713-4D96-8AAC-8C3F8C86B882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RHBGame.Data", "src\RHBGame.Data\RHBGame.Data.csproj", "{80947E66-F713-4D96-8AAC-8C3F8C86B882}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

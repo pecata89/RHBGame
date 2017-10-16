@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -14,27 +15,27 @@ namespace RHBGame.WebApi.Controllers
     public sealed class PlayerController : ApiController
     {
         private readonly RHBGameRepository _repository;
-
-
-        public PlayerController(RHBGameRepository repository)
+        private readonly AuthenticationHelper _authentication;
+        
+        public PlayerController(RHBGameRepository repository, AuthenticationHelper authentication)
         {
             _repository = repository;
+            _authentication = authentication;
         }
-
-
+        
         /// <summary>
         /// Authenticates the player using it's username and password. If the authentication is successful
         /// the method will return a security token that must be included in all other API calls that require
         /// the caller to be authenticated. If the authentication fails the method will return null.
         /// </summary>
         [Route("login"), HttpPost]
-        public async Task<String> LoginAsync(String username, String password)
+        public async Task<String> LoginAsync([Required]PlayerLoginInfo login)
         {
-            var player = await _repository.Players.FirstAsync(x => x.Username == username);
+            var player = await _repository.Players.FirstAsync(x => x.Username == login.Username);
 
-            if (player != null && PasswordHelper.CheckHash(password, player.PasswordHash, player.PasswordSalt))
+            if (player != null && PasswordHelper.CheckHash(login.Password, player.PasswordHash, player.PasswordSalt))
             {
-                // TADA, the player's username and password are correct. We need to create a session token (security)
+                // The player's username and password are correct. We need to create a session token (security)
                 // that we will send the to the player so when he/she communicates later on with the API
                 // we will know who he or she is.
                 var randomBytes = new Byte[20];
@@ -53,6 +54,16 @@ namespace RHBGame.WebApi.Controllers
                     PlayerId = player.Id
                 };
 
+                // Check if user with that username is already in the database.
+                // To avoid duplication of session autentication token.
+                var duplication = await _repository.Sessions.FirstAsync(x => x.Player.Id == session.PlayerId);
+
+                // If there is a player with the found id
+                if (duplication != null)
+                {
+                    return "A player with id already have a session.";
+                }
+
                 _repository.Sessions.Add(session);
 
                 await _repository.SaveChangesAsync();
@@ -63,24 +74,45 @@ namespace RHBGame.WebApi.Controllers
             }
 
             // Authentication failed, return null as to the specification
-            return null;
+            return "Username not found.";
         }
 
+        [Route("update"), HttpPost]
+        public async Task<IHttpActionResult> EditAsync([Required]PlayerUpdateInfo update)
+        {
+            var authentication = await _authentication.AuthenticateAsync(update.AuthToken);
+            var player = await _repository.Players.FirstAsync(x => x.Id == update.PlayerId);
 
-        [Route( "create" ), HttpPost]
+            if (player == null)
+            {
+                Json("There was an error while updating player information.");
+            }
+            
+            player.Name = update.Name;
+            player.Gender = update.Gender;
+            player.Birthdate = update.Birthdate;
+            player.Edited = DateTime.UtcNow;
+
+            // Update the database
+            _repository.Entry(player).State = EntityState.Modified;
+
+            await _repository.SaveChangesAsync();
+            
+            return Json(update.Name + "'s info was edited.");
+        }
+        
+        [Route("create"), HttpPost]
         public async Task CreateAsync([Required]PlayerCreateInfo info)
         {
-            // Here the object of the new player is created
-            
-            // Where to add validation check?
+            // Create new Player object
             var player = new Player
             {
                 Name = info.Name,
-                PasswordSalt = PasswordHelper.CreateRandomSalt(16),
                 Username = info.Username,
+                PasswordSalt = PasswordHelper.CreateRandomSalt(16),
                 Email = info.Email,
                 Gender = info.Gender,
-                Birthdate = info.BirthDate,
+                Birthdate = info.Birthdate,
                 Created = DateTime.UtcNow
             };
 
@@ -92,21 +124,24 @@ namespace RHBGame.WebApi.Controllers
 
             if (duplicate != null)
             {
-                // We have a duplicate
-                throw new SystemException("The provided username already exists.");
+                // Throw json exeption
+                Json("The provided username already exists.");
             }
 
-            // We check for email duplication
+            // Check for email duplication
             duplicate = await _repository.Players.FirstOrDefaultAsync(x => x.Email == info.Email);
 
             if (duplicate != null)
             {
-                throw new SystemException("The provided email already exists.");
+                Json("The provided email already exists.");
             }
 
+            // Populates the Players table in the database
             _repository.Players.Add(player);
 
             await _repository.SaveChangesAsync();
+
+            Json(info.Username + " was successfully created.");
         }
     }
 }

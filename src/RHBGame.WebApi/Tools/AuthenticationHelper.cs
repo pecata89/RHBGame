@@ -25,6 +25,7 @@ namespace RHBGame.WebApi
             // Check if the session is expired
             if (session == null || DateTime.UtcNow - session.LastActivity > _timeOut)
             {
+                // Where do we remove the expired session?
                 throw new SystemException("The provided session token is expired or invalid.");
             }
 

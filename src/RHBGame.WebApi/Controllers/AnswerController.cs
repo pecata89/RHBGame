@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web.Http;
 using RHBGame.Data;
+using RHBGame.Data.Models;
 
 namespace RHBGame.WebApi.Controllers
 {
@@ -17,11 +20,22 @@ namespace RHBGame.WebApi.Controllers
             _authentication = authentication;
         }
 
-
-        public async Task Test(String authToken, Int32 data)
+        [Route("test"), HttpPost]
+        public async Task Test(String authToken)
         {
-            var player = await _authentication.AuthenticateAsync(authToken);
-
+            var authentication = await _authentication.AuthenticateAsync(authToken);
         }
+
+        [Route("list"), HttpGet]
+        public async Task<IEnumerable<Answer>> ListAsync()
+        {
+            return await _repository.Answers.ToListAsync();
+        }
+
+        //[Route("add/{question_id}/{answer}"), HttpPost]
+        //public async Task AddAsync()
+        //{
+
+        //}
     }
 }

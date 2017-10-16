@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace RHBGame.Data.Models
 {
@@ -19,16 +20,20 @@ namespace RHBGame.Data.Models
         public String Text { get; set; }
         
         [Required]
+        [JsonIgnore]
         [Column("question_id")]
         public Int32 QuestionId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(QuestionId))]
         public Question Question { get; set; }
         
         [Required]
+        [JsonIgnore]
         [Column("player_id")]
         public Int32 PlayerId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(PlayerId))]
         public Player Player { get; set; }
         
