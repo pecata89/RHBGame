@@ -45,12 +45,10 @@ namespace RHBGame.WebApi.Controllers
         {
             await _authentication.AuthenticateAsync(parameters.AuthToken);
             
-            var questions = await _repository.Topics
+            return await _repository.Topics
                 .Where(x => x.Id == parameters.TopicId)
                 .SelectMany(x => x.Questions)
                 .ToListAsync();
-            
-            return questions;
         }
     }
 }

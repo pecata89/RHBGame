@@ -84,13 +84,16 @@ namespace RHBGame.WebApi.Controllers
         [Route("update"), HttpPost]
         public async Task UpdateAsync([Required] UpdateParams parameters)
         {
-            var player = await _authentication.AuthenticateAsync(parameters.AuthToken);
+            await _authentication.AuthenticateAsync(parameters.AuthToken);
 
+            var player = await _repository.Players.FirstAsync(x => x.Id == parameters.PlayerId);
+            
             player.Name = parameters.Name;
             player.Gender = parameters.Gender;
             player.Birthdate = parameters.Birthdate;
             player.Edited = DateTime.UtcNow;
-
+            
+            // The sql statement is being executed
             await _repository.SaveChangesAsync();
         }
 

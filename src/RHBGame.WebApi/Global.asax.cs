@@ -13,6 +13,7 @@ namespace RHBGame.WebApi
     public class Global : HttpApplication
     {
         private Timer _expiredSessionsTimer;
+        private TimeSpan _timeOut = TimeSpan.FromMinutes(20);
 
         void Application_Start(Object sender, EventArgs e)
         {
@@ -34,13 +35,31 @@ namespace RHBGame.WebApi
                 config.DependencyResolver = new DependencyResolver(container);
             });
 
-            // Create a timer that will remove the expired user sessions
+            // Timer that will remove the expired user sessions
             _expiredSessionsTimer = new Timer(_ => ClearExpiredSessions(), null, TimeSpan.FromMinutes(20), TimeSpan.FromMinutes(20));
         }
 
         private void ClearExpiredSessions()
         {
             // TODO: Implement expired sessions removal
+            using (var db = new RHBGameRepository())
+            {
+                foreach (var session in db.Sessions)
+                {
+                    if (DateTime.UtcNow - session.Created > _timeOut)
+                    {
+                        if (DateTime.UtcNow - session.LastActivity > _timeOut)
+                        {
+                            // Entity state delete
+                            db.Sessions.Remove(db.Sessions.Find(session.Token));
+                            // SQL Delete executed
+                            db.SaveChanges();
+                        }
+                        db.Sessions.Remove(db.Sessions.Find(session.Token));
+                        db.SaveChanges();
+                    }
+                }
+            }
         }
 
         private sealed class DependencyResolver : IDependencyResolver

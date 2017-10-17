@@ -6,7 +6,14 @@ namespace RHBGame.WebApi.Controllers
 {
     public partial class AnswerController
     {
-        public class AddParams
+        public class ListParams
+        {
+            [Required]
+            [JsonProperty("authToken")]
+            public String AuthToken { get; set; }
+        }
+
+        public class CreateParams
         {
             [Required]
             [JsonProperty("authToken")]

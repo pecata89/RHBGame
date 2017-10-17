@@ -21,14 +21,16 @@ namespace RHBGame.WebApi.Controllers
             _authentication = authentication;
         }
 
-        [Route("list"), HttpGet]
-        public async Task<IEnumerable<Answer>> ListAsync()
+        [Route("list"), HttpPost]
+        public async Task<IEnumerable<Answer>> ListAsync([Required] ListParams parameters)
         {
+            await _authentication.AuthenticateAsync(parameters.AuthToken);
+
             return await _repository.Answers.ToListAsync();
         }
 
-        [Route("add"), HttpPost]
-        public Task<Answer> AddAsync([Required] AddParams parameters)
+        [Route("create"), HttpPost]
+        public Task<Answer> CreateAsync([Required] CreateParams parameters)
         {
             throw new NotImplementedException();
         }
