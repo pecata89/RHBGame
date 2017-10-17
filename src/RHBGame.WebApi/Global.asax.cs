@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dependencies;
@@ -11,6 +12,8 @@ namespace RHBGame.WebApi
 {
     public class Global : HttpApplication
     {
+        private Timer _expiredSessionsTimer;
+
         void Application_Start(Object sender, EventArgs e)
         {
             // Force the creation of the databae (or update) at startup
@@ -22,7 +25,7 @@ namespace RHBGame.WebApi
             GlobalConfiguration.Configure(config =>
             {
                 config.MapHttpAttributeRoutes();
-                
+
                 // Dependency injection
                 var container = new UnityContainer();
                 container.RegisterType<RHBGameRepository>();
@@ -30,8 +33,15 @@ namespace RHBGame.WebApi
 
                 config.DependencyResolver = new DependencyResolver(container);
             });
+
+            // Create a timer that will remove the expired user sessions
+            _expiredSessionsTimer = new Timer(_ => ClearExpiredSessions(), null, TimeSpan.FromMinutes(20), TimeSpan.FromMinutes(20));
         }
 
+        private void ClearExpiredSessions()
+        {
+            // TODO: Implement expired sessions removal
+        }
 
         private sealed class DependencyResolver : IDependencyResolver
         {

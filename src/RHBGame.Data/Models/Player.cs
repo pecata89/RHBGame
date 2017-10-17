@@ -21,6 +21,7 @@ namespace RHBGame.Data.Models
 
         [Required]
         [MaxLength(50)]
+        [JsonIgnore]
         [Column("username")]
         public String Username { get; set; }
 
@@ -38,6 +39,7 @@ namespace RHBGame.Data.Models
 
         [Required]
         [MaxLength(100)]
+        [JsonIgnore]
         [Column("email")]
         public String Email { get; set; }
 
@@ -49,11 +51,13 @@ namespace RHBGame.Data.Models
         [Required]
         [Column("birthdate", TypeName = "date")]
         public DateTime Birthdate { get; set; }
-        
+
+        [JsonIgnore]
         [Column("edited", TypeName = "datetime2")]
         public DateTime? Edited { get; set; }
 
         [Required]
+        [JsonIgnore]
         [Column("created", TypeName = "datetime2")]
         public DateTime Created { get; set; }
     }

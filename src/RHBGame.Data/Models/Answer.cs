@@ -36,7 +36,8 @@ namespace RHBGame.Data.Models
         [JsonIgnore]
         [ForeignKey(nameof(PlayerId))]
         public Player Player { get; set; }
-        
+
+        [JsonIgnore]
         [Column("created", TypeName = "datetime2")]
         public DateTime Created { get; set; }
     }

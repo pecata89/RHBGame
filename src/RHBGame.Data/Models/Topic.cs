@@ -25,7 +25,13 @@ namespace RHBGame.Data.Models
         [Column("color")]
         public String Color { get; set; }
 
+        [Required]
         [JsonIgnore]
+        [Column("question_id")]
+        public Int32 QuestionId { get; }
+
+        [JsonIgnore]
+        [ForeignKey(nameof(QuestionId))]
         public virtual ICollection<Question> Questions { get; set; }
     }
 }

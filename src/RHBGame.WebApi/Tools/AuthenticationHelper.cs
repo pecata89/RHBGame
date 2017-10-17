@@ -16,6 +16,7 @@ namespace RHBGame.WebApi
             _repository = repository;
         }
 
+
         public async Task<Player> AuthenticateAsync(String token)
         {
             var session = await _repository.Sessions
@@ -25,7 +26,7 @@ namespace RHBGame.WebApi
             // Check if the session is expired
             if (session == null || DateTime.UtcNow - session.LastActivity > _timeOut)
             {
-                // Where do we remove the expired session?
+                // TODO: Where do we remove the expired session?
                 throw new SystemException("The provided session token is expired or invalid.");
             }
 
