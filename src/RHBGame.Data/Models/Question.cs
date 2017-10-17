@@ -20,13 +20,7 @@ namespace RHBGame.Data.Models
         [Column("question")]
         public String Text { get; set; }
 
-        [Required]
         [JsonIgnore]
-        [Column("topic_id")]
-        public Int32 TopicId { get; }
-
-        [JsonIgnore]
-        [ForeignKey(nameof(TopicId))]
         public virtual ICollection<Topic> Topics { get; set; }
     }
 }

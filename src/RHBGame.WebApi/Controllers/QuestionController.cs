@@ -45,7 +45,9 @@ namespace RHBGame.WebApi.Controllers
         {
             await _authentication.AuthenticateAsync(parameters.AuthToken);
             
-            var questions = (from t in _repository.Questions where t.TopicId == parameters.TopicId select t).ToList();
+            var questions = await _repository.Questions
+
+                .ToListAsync();
 
             // TODO: Implement find and return all questions by selected topid id
 
