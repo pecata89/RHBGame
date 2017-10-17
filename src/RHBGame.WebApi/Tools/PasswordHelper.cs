@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
+using RHBGame.Data.Models;
 
 namespace RHBGame.WebApi
 {
@@ -9,14 +10,9 @@ namespace RHBGame.WebApi
         /// <summary>
         /// Creates a cryptographically strong (random) salt of the provided size.
         /// </summary>
-        public static Byte[] CreateRandomSalt(Int32 size)
+        public static Byte[] CreateRandomSalt()
         {
-            if ( size <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(size));
-            }
-
-            var salt = new Byte[size];
+            var salt = new Byte[Player.SaltLength];
 
             using (var rng = new RNGCryptoServiceProvider())
             {
@@ -32,9 +28,14 @@ namespace RHBGame.WebApi
         /// </summary>
         public static Byte[] ComputeHash(String password, Byte[] salt)
         {
+            if ( salt?.Length != Player.SaltLength)
+            {
+                throw new ArgumentException("The salt size is not correct.", nameof(salt));
+            }
+
             using (var crypto = new Rfc2898DeriveBytes(password, salt, 10000))
             {
-                return crypto.GetBytes(20);
+                return crypto.GetBytes(Player.HashLength);
             }
         }
 

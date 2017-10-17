@@ -27,13 +27,14 @@ namespace RHBGame.WebApi.Controllers
         public async Task<IEnumerable<Answer>> FindByQuestionAsync([Required] FindByQuestionParams parameters)
         {
             await _authentication.AuthenticateAsync(parameters.AuthToken);
-            
-            // Returns a list of answers by going through questions with the requested questions id
-            return
-                await _repository.Questions
-                    .Where(x => x.Id == parameters.QuestionId)
-                    .SelectMany(x => x.Answers)
-                    .ToListAsync();
+
+            if (!await _repository.Questions.AnyAsync(x => x.Id == parameters.QuestionId))
+            {
+                throw new SystemException("Question doesn't exist.");
+            }
+
+            // Select all the answers for the provided question
+            return await _repository.Answers.Where(x => x.QuestionId == parameters.QuestionId).ToListAsync();
         }
 
         [Route("create"), HttpPost]

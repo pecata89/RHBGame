@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -36,28 +37,24 @@ namespace RHBGame.WebApi
             });
 
             // Timer that will remove the expired user sessions
-            _expiredSessionsTimer = new Timer(_ => ClearExpiredSessions(), null, TimeSpan.FromMinutes(20), TimeSpan.FromMinutes(20));
+            _expiredSessionsTimer = new Timer(_ => ClearExpiredSessions(), null, TimeSpan.Zero, TimeSpan.FromMinutes(20));
         }
 
         private void ClearExpiredSessions()
         {
-            // TODO: Implement expired sessions removal
             using (var db = new RHBGameRepository())
             {
-                foreach (var session in db.Sessions)
+                var currentTime = DateTime.UtcNow;
+                var expiredSessions = db.Sessions.Where(x => DbFunctions.DiffSeconds( x.LastActivity, currentTime) > _timeOut.TotalSeconds).ToList();
+
+                if (expiredSessions.Count > 0)
                 {
-                    if (DateTime.UtcNow - session.Created > _timeOut)
+                    foreach (var session in expiredSessions)
                     {
-                        db.Sessions.Remove(db.Sessions.Find(session.Token));
-                        db.SaveChanges();
+                        db.Sessions.Remove(session);
                     }
-                    else if (DateTime.UtcNow - session.LastActivity > _timeOut)
-                    {
-                        // Entity state delete
-                        db.Sessions.Remove(db.Sessions.Find(session.Token));
-                        // SQL Delete executed
-                        db.SaveChanges();
-                    }
+
+                    db.SaveChanges();
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using RHBGame.Data.Models;
 
 namespace RHBGame.WebApi.Controllers
 {
@@ -37,7 +38,7 @@ namespace RHBGame.WebApi.Controllers
 
             [Required]
             [JsonProperty("gender")]
-            public String Gender { get; set; }
+            public Gender Gender { get; set; }
 
 
             [Required]
@@ -69,7 +70,7 @@ namespace RHBGame.WebApi.Controllers
 
             [Required]
             [JsonProperty("gender")]
-            public String Gender { get; set; }
+            public Gender Gender { get; set; }
 
 
             [Required]

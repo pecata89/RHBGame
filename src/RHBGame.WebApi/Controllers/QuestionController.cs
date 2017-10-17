@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using RHBGame.Data;
@@ -45,12 +44,14 @@ namespace RHBGame.WebApi.Controllers
         {
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
+            var topic = await _repository.Topics.Include(x => x.Questions).FirstAsync(x => x.Id == parameters.TopicId);
 
-            // Returns a list of questions by going through topics with the requested topic id
-            return await _repository.Topics
-                .Where(x => x.Id == parameters.TopicId)
-                .SelectMany(x => x.Questions)
-                .ToListAsync();
+            if (topic == null)
+            {
+                throw new SystemException("Topic was not found.");
+            }
+
+            return topic.Questions;
         }
     }
 }

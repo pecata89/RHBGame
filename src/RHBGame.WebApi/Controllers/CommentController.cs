@@ -22,18 +22,27 @@ namespace RHBGame.WebApi.Controllers
             _authentication = authentication;
         }
 
+        [Route("list"), HttpPost]
+        public async Task<IEnumerable<Comment>> ListAsync([Required] ListParams parameters)
+        {
+            await _authentication.AuthenticateAsync(parameters.AuthToken);
+            
+            return await _repository.Comments.ToListAsync();
+        }
+
         // List of comments shown by selected answer
         [Route("findbyanswer"), HttpPost]
-        public async Task<IEnumerable<Comment>> FindByAnsweAsync([Required] FindByAnswerParams parameters)
+        public async Task<IEnumerable<Comment>> FindByAnswerAsync([Required] FindByAnswerParams parameters)
         {
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
-            // Returns a list of comments by going through answers with the requested answer id
-            return
-                await _repository.Answers
-                    .Where(x => x.Id == parameters.AnswerId)
-                    .SelectMany(x => x.Comments)
-                    .ToListAsync();
+            if (!await _repository.Answers.AnyAsync(x => x.Id == parameters.AnswerId))
+            {
+                throw new SystemException("Question doesn't exist.");
+            }
+
+            // Select all the comments for the provided answer
+            return await _repository.Comments.Where(x => x.AnswerId == parameters.AnswerId).ToListAsync();
         }
 
         [Route("create"), HttpPost]
@@ -75,14 +84,14 @@ namespace RHBGame.WebApi.Controllers
             return await _repository.Comments.FindAsync(parameters.CommentId);
         }
 
-        //[Route("remove"), HttpDelete]
-        //public async Task RemoveAsync([Required] RemoveParams parameters)
-        //{
-        //    await _authentication.AuthenticateAsync(parameters.AuthToken);
+        [Route("remove"), HttpDelete]
+        public async Task RemoveAsync([Required] RemoveParams parameters)
+        {
+            await _authentication.AuthenticateAsync(parameters.AuthToken);
 
-        //    var comment = _repository.Comments.FindAsync(parameters.CommentId);
-            
-        //    await _repository.Comments.Remove(comment);
-        //}
+            var comment = await _repository.Comments.FindAsync(parameters.CommentId);
+
+            _repository.Comments.Remove(comment);
+        }
     }
 }

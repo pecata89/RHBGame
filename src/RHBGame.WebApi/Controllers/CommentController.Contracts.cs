@@ -6,6 +6,13 @@ namespace RHBGame.WebApi.Controllers
 {
     public partial class CommentController
     {
+        public class ListParams
+        {
+            [Required]
+            [JsonProperty("authToken")]
+            public String AuthToken { get; set; }
+        }
+
         public class FindByAnswerParams
         {
             [Required]
@@ -61,15 +68,15 @@ namespace RHBGame.WebApi.Controllers
             public Int32 CommentId { get; set; }
         }
 
-        //public class RemoveParams
-        //{
-        //    [Required]
-        //    [JsonProperty("authToken")]
-        //    public String AuthToken { get; set; }
+        public class RemoveParams
+        {
+            [Required]
+            [JsonProperty("authToken")]
+            public String AuthToken { get; set; }
 
-        //    [Required]
-        //    [JsonProperty("commentId")]
-        //    public Int32 CommentId { get; set; }
-        //}
+            [Required]
+            [JsonProperty("commentId")]
+            public Int32 CommentId { get; set; }
+        }
     }
 }

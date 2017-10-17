@@ -8,6 +8,9 @@ namespace RHBGame.Data.Models
     [Table("Players")]
     public class Player
     {
+        public const Int32 SaltLength = 16;
+        public const Int32 HashLength = 20;
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
@@ -27,13 +30,13 @@ namespace RHBGame.Data.Models
 
         [JsonIgnore]
         [Required]
-        [MaxLength(50)]
+        [MinLength(HashLength), MaxLength(HashLength)]
         [Column("password_hash")]
         public Byte[] PasswordHash { get; set; }
 
         [JsonIgnore]
         [Required]
-        [MaxLength(50)]
+        [MinLength(SaltLength), MaxLength(SaltLength)]
         [Column("password_salt")]
         public Byte[] PasswordSalt { get; set; }
 
@@ -44,9 +47,8 @@ namespace RHBGame.Data.Models
         public String Email { get; set; }
 
         [Required]
-        [MaxLength(6)]
         [Column("gender")]
-        public String Gender { get; set; }
+        public Gender Gender { get; set; }
 
         [Required]
         [Column("birthdate", TypeName = "date")]

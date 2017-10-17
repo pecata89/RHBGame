@@ -105,7 +105,7 @@ namespace RHBGame.WebApi.Controllers
             {
                 Name = parameters.Name,
                 Username = parameters.Username,
-                PasswordSalt = PasswordHelper.CreateRandomSalt(16),
+                PasswordSalt = PasswordHelper.CreateRandomSalt(),
                 Email = parameters.Email,
                 Gender = parameters.Gender,
                 Birthdate = parameters.Birthdate,
