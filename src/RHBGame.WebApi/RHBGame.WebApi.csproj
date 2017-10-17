@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AnswerController.Contracts.cs" />
+    <Compile Include="Controllers\CommentController.Contracts.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\PlayerController.Contracts.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\AnswerController.cs" />

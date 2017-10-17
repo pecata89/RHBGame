@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using RHBGame.Data;
@@ -21,18 +22,36 @@ namespace RHBGame.WebApi.Controllers
             _authentication = authentication;
         }
 
-        [Route("list"), HttpPost]
-        public async Task<IEnumerable<Answer>> ListAsync([Required] ListParams parameters)
+        // List of answers shown by selected question
+        [Route("findbyquestion"), HttpPost]
+        public async Task<IEnumerable<Answer>> FindByQuestionAsync([Required] FindByQuestionParams parameters)
         {
             await _authentication.AuthenticateAsync(parameters.AuthToken);
-
-            return await _repository.Answers.ToListAsync();
+            
+            // Returns a list of answers by going through questions with the requested questions id
+            return
+                await _repository.Questions
+                    .Where(x => x.Id == parameters.QuestionId)
+                    .SelectMany(x => x.Answers)
+                    .ToListAsync();
         }
 
         [Route("create"), HttpPost]
-        public Task<Answer> CreateAsync([Required] CreateParams parameters)
+        public async Task CreateAsync([Required] CreateParams parameters)
         {
-            throw new NotImplementedException();
+            await _authentication.AuthenticateAsync(parameters.AuthToken);
+
+            var answer = new Answer()
+            {
+                Text = parameters.Answer,
+                PlayerId = parameters.PlayerId,
+                QuestionId = parameters.QuestionId,
+                Created = DateTime.UtcNow
+            };
+
+            _repository.Answers.Add(answer);
+
+            await _repository.SaveChangesAsync();
         }
     }
 }

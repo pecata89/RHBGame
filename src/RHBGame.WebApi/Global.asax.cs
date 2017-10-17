@@ -48,14 +48,14 @@ namespace RHBGame.WebApi
                 {
                     if (DateTime.UtcNow - session.Created > _timeOut)
                     {
-                        if (DateTime.UtcNow - session.LastActivity > _timeOut)
-                        {
-                            // Entity state delete
-                            db.Sessions.Remove(db.Sessions.Find(session.Token));
-                            // SQL Delete executed
-                            db.SaveChanges();
-                        }
                         db.Sessions.Remove(db.Sessions.Find(session.Token));
+                        db.SaveChanges();
+                    }
+                    else if (DateTime.UtcNow - session.LastActivity > _timeOut)
+                    {
+                        // Entity state delete
+                        db.Sessions.Remove(db.Sessions.Find(session.Token));
+                        // SQL Delete executed
                         db.SaveChanges();
                     }
                 }

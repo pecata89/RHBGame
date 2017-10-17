@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
@@ -40,5 +41,8 @@ namespace RHBGame.Data.Models
         [JsonIgnore]
         [Column("created", TypeName = "datetime2")]
         public DateTime Created { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<Comment> Comments { get; }
     }
 }

@@ -22,5 +22,8 @@ namespace RHBGame.Data.Models
 
         [JsonIgnore]
         public virtual ICollection<Topic> Topics { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<Answer> Answers { get; }
     }
 }

@@ -81,7 +81,7 @@ namespace RHBGame.WebApi.Controllers
             return null;
         }
 
-        [Route("update"), HttpPost]
+        [Route("update"), HttpPut]
         public async Task UpdateAsync([Required] UpdateParams parameters)
         {
             await _authentication.AuthenticateAsync(parameters.AuthToken);

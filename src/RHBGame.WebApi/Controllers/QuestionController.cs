@@ -44,7 +44,9 @@ namespace RHBGame.WebApi.Controllers
         public async Task<IEnumerable<Question>> FindByTopicAsync([Required] FindByTopicParams parameters)
         {
             await _authentication.AuthenticateAsync(parameters.AuthToken);
-            
+
+
+            // Returns a list of questions by going through topics with the requested topic id
             return await _repository.Topics
                 .Where(x => x.Id == parameters.TopicId)
                 .SelectMany(x => x.Questions)
