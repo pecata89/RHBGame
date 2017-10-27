@@ -81,9 +81,10 @@ namespace RHBGame.WebApi.Controllers
             return null;
         }
 
-        [Route("update"), HttpPut]
+        [Route("update"), HttpPost]
         public async Task UpdateAsync([Required] UpdateParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             var player = await _repository.Players.FirstAsync(x => x.Id == parameters.PlayerId);

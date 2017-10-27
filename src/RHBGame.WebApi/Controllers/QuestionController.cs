@@ -21,12 +21,9 @@ namespace RHBGame.WebApi.Controllers
             _authentication = authentication;
         }
 
-        [Route("list"), HttpPost]
+        [Route("list"), HttpGet]
         public async Task<IEnumerable<Question>> ListAsync([Required] ListParams parameters)
         {
-            // Check if user is authenticated
-            await _authentication.AuthenticateAsync(parameters.AuthToken);
-
             // Returns list of Questions
             return await _repository.Questions.ToListAsync();
         }
@@ -34,14 +31,17 @@ namespace RHBGame.WebApi.Controllers
         [Route("findbyid"), HttpPost]
         public async Task<Question> FindByIdAsync([Required] FindByIdParams parameters)
         {
+            // Check if user is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
+            // Returns the given id
             return await _repository.Questions.FindAsync(parameters.QuestionId);
         }
 
         [Route("findbytopic"), HttpPost]
         public async Task<IEnumerable<Question>> FindByTopicAsync([Required] FindByTopicParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             var topic = await _repository.Topics.Include(x => x.Questions).FirstAsync(x => x.Id == parameters.TopicId);

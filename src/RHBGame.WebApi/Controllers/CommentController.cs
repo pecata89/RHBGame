@@ -25,6 +25,7 @@ namespace RHBGame.WebApi.Controllers
         [Route("list"), HttpPost]
         public async Task<IEnumerable<Comment>> ListAsync([Required] ListParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
             
             return await _repository.Comments.ToListAsync();
@@ -34,6 +35,7 @@ namespace RHBGame.WebApi.Controllers
         [Route("findbyanswer"), HttpPost]
         public async Task<IEnumerable<Comment>> FindByAnswerAsync([Required] FindByAnswerParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             if (!await _repository.Answers.AnyAsync(x => x.Id == parameters.AnswerId))
@@ -48,13 +50,14 @@ namespace RHBGame.WebApi.Controllers
         [Route("create"), HttpPost]
         public async Task CreateAsync([Required] CreateParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             var comment = new Comment()
             {
                 Text = parameters.Comment,
-                PlayerId = parameters.PlayerId,
                 AnswerId = parameters.AnswerId,
+                //PlayerId = parameters.PlayerId,
                 Created = DateTime.UtcNow
             };
 
@@ -63,9 +66,10 @@ namespace RHBGame.WebApi.Controllers
             await _repository.SaveChangesAsync();
         }
 
-        [Route("update"), HttpPut]
+        [Route("update"), HttpPost]
         public async Task UpdateAsync([Required] UpdateParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             var comment = await _repository.Comments.FindAsync(parameters.CommentId);
@@ -79,19 +83,23 @@ namespace RHBGame.WebApi.Controllers
         [Route("findbyid"), HttpPost]
         public async Task<Comment> FindByIdAsync([Required] FindByIdParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             return await _repository.Comments.FindAsync(parameters.CommentId);
         }
 
-        [Route("remove"), HttpDelete]
+        [Route("remove"), HttpPost]
         public async Task RemoveAsync([Required] RemoveParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             var comment = await _repository.Comments.FindAsync(parameters.CommentId);
 
             _repository.Comments.Remove(comment);
+
+            await _repository.SaveChangesAsync();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace RHBGame.Data.Models
     {
         [Key]
         [Required]
-        [MaxLength(28)]
+        [MinLength(28), MaxLength(28)]
         [Column("session_token", TypeName = "char")]
         public String Token { get; set; }
 

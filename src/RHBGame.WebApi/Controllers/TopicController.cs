@@ -23,12 +23,14 @@ namespace RHBGame.WebApi.Controllers
         [Route("list"), HttpGet]
         public async Task<IEnumerable<Topic>> ListAsync()
         {
+            // Returns list of Topics
             return await _repository.Topics.ToListAsync();
         }
         
         [Route("findbyid"), HttpPost]
         public async Task<Topic> FindByIdAsync([Required] FindByIdParams parameters)
         {
+            // Check if user is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             return await _repository.Topics.FindAsync(parameters.TopicId);

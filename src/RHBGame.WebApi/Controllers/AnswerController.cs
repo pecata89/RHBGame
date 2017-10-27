@@ -26,6 +26,7 @@ namespace RHBGame.WebApi.Controllers
         [Route("findbyquestion"), HttpPost]
         public async Task<IEnumerable<Answer>> FindByQuestionAsync([Required] FindByQuestionParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             if (!await _repository.Questions.AnyAsync(x => x.Id == parameters.QuestionId))
@@ -40,6 +41,7 @@ namespace RHBGame.WebApi.Controllers
         [Route("create"), HttpPost]
         public async Task CreateAsync([Required] CreateParams parameters)
         {
+            // Check if player is authenticated
             await _authentication.AuthenticateAsync(parameters.AuthToken);
 
             var answer = new Answer()

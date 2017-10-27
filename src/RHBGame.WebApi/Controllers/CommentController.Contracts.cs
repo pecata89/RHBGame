@@ -34,9 +34,9 @@ namespace RHBGame.WebApi.Controllers
             [JsonProperty("comment")]
             public String Comment { get; set; }
 
-            [Required]
-            [JsonProperty("playerId")]
-            public Int32 PlayerId { get; set; }
+            //[Required]
+            //[JsonProperty("playerId")]
+            //public Int32 PlayerId { get; set; }
 
             [Required]
             [JsonProperty("answerId")]

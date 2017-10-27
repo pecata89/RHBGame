@@ -27,15 +27,15 @@ namespace RHBGame.Data.Models
         [JsonIgnore]
         [ForeignKey(nameof(AnswerId))]
         public Answer Answer { get; set; }
-        
-        [Required]
-        [JsonIgnore]
-        [Column("player_id")]
-        public Int32 PlayerId { get; set; }
 
-        [JsonIgnore]
-        [ForeignKey(nameof(PlayerId))]
-        public Player Player { get; set; }
+        //[Required]
+        //[JsonIgnore]
+        //[Column("player_id")]
+        //public Int32 PlayerId { get; set; }
+
+        //[JsonIgnore]
+        //[ForeignKey(nameof(PlayerId))]
+        //public Player Player { get; set; }
 
         [JsonIgnore]
         [Column("created", TypeName = "datetime2")]
